@@ -1,0 +1,91 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">
+            {{ '::Menu:PhoneDirectory' | abpLocalization }}
+          </h5>
+        </div>
+        <div class="text-end col col-md-6">
+
+          <div class="text-lg-end pt-2">
+            <button *abpPermission="'ClientPortal.PhoneDirectory.Create'" id="create" class="btn btn-primary" type="button" (click)="createPhone()">
+              <i class="fa fa-plus me-1"></i>
+              <span>{{ "::NewPhoneNumber" | abpLocalization }}</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ngx-datatable [rows]="phoneDirectories.items" [count]="phoneDirectories.totalCount" [list]="list" default>
+        <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div ngbDropdown container="body" class="d-inline-block">
+              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" ngbDropdownToggle>
+                <i class="fa fa-cog me-1"></i>{{ '::Actions' | abpLocalization }}
+              </button>
+              <div ngbDropdownMenu>
+                <button *abpPermission="'ClientPortal.PhoneDirectory.Edit'" ngbDropdownItem (click)="editPhone(row.id)">
+                  {{ '::Edit' | abpLocalization }}
+                </button>
+                <button *abpPermission="'ClientPortal.PhoneDirectory.Edit'" ngbDropdownItem (click)="delete(row.id)">
+                  {{ '::Delete' | abpLocalization }}
+              </button>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::PhoneNumber' | abpLocalization" prop="phoneNumber"></ngx-datatable-column>
+        <ngx-datatable-column [name]="'::IsPrimary' | abpLocalization" prop="isPrimary">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row.isPrimary ? 'Yes' : 'No' }}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column [name]="'::IsAcceptTextMessage' | abpLocalization" prop="isAcceptTextMessage">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.isAcceptTextMessage ? 'Yes' : 'No' }}
+            </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+    </div>
+  </div>
+
+  <!-- Add the modal here -->
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>{{ (selectedPhone.id ? '::Edit' : '::NewPhoneNumber' ) | abpLocalization }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody> 
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="mt-2">
+        <label for="phoneNumber">Phone Number</label><span> * </span>
+        <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber" rows="4" autofocus/>
+      </div>
+      <div class="form-check mt-2">
+          <input type="checkbox" id="isPrimary" class="form-check-input" formControlName="isPrimary" />
+          <label class="form-check-label" for="isPrimary">Is Primary Phone Number</label>
+      </div>
+      <div class="form-check mt-2">
+        <input type="checkbox" id="isAcceptTextMessage" class="form-check-input" formControlName="isAcceptTextMessage" />
+        <label class="form-check-label" for="isAcceptTextMessage">Accept Text Message</label>
+      </div>
+    </form>    
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ '::Close' | abpLocalization }}
+    </button>
+
+    <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+      <i class="fa fa-check mr-1"></i>
+      {{ '::Save' | abpLocalization }}
+</button>
+  </ng-template>
+</abp-modal>
+  

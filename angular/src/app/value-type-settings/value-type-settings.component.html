@@ -1,0 +1,112 @@
+<mat-card class="example-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{ '::ValueTypeSettings' | abpLocalization }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mt-2">
+    <form [formGroup]="form" (ngSubmit)="save()">
+
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ '::Customers' | abpLocalization }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-2"> 
+          <div formGroupName="customerSettings">  
+            <div class="form-group row">
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Status</mat-label>
+                  <mat-select matInput id="customerSettings-status" formControlName="status">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Type</mat-label>
+                  <mat-select matInput id="customerSettings-type" formControlName="type">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+  
+            <div class="form-group row">
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Acct Class</mat-label>
+                  <mat-select matInput id="customerSettings-acctClass" formControlName="acctClass">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Acct Manager</mat-label>
+                  <mat-select matInput id="customerSettings-acctManager" formControlName="acctManager">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+  
+            <div class="form-group row">
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Invoice Payment Schedule</mat-label>
+                  <mat-select matInput id="customerSettings-invoicePaymentSchedule" formControlName="invoicePaymentSchedule">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Term</mat-label>
+                  <mat-select matInput id="customerSettings-term" formControlName="term">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>  
+            <div class="form-group row">
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>AR Statement Invoice Type</mat-label>
+                  <mat-select matInput id="customerSettings-arStatementInvoiceType" formControlName="arStatementInvoiceType">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Price Sheet Code</mat-label>
+                  <mat-select matInput id="customerSettings-priceSheetCode" formControlName="priceSheetCode">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>  
+            <div class="form-group row">
+              <div class="col-md-6">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Referred By</mat-label>
+                  <mat-select matInput id="customerSettings-referredBy" formControlName="referredBy">
+                    <mat-option *ngFor="let valueType of valueTypes$" [value]="valueType.id">{{ valueType.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>  
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="pt-2">
+      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid" type="submit">
+        <i class="fa fa-check mr-1"></i>
+        {{ '::Save' | abpLocalization }}
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card> 

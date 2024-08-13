@@ -1,0 +1,164 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col col-md-6">
+                <h5 class="card-title">
+                    {{ '::Menu:Shops' | abpLocalization }}
+                </h5>
+            </div>
+            <div class="text-end col col-md-6">
+                <div class="text-lg-end pt-2">
+                    <button *abpPermission="'ClientPortal.Shops.Create'" id="create" class="btn btn-primary" type="button" (click)="createShop()">
+                        <i class="fa fa-plus me-1"></i>
+                        <span>{{ "::Shop:NewShop" | abpLocalization }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div id="data-tables-table-filter" class="data-tables-filter mb-3">
+            <div class="input-group">
+                <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search"
+                    (keyup)="list.get()"
+                    [(ngModel)]="searchParam"
+                />
+            </div>
+        </div>
+        
+        <ngx-datatable [rows]="shop.items" [count]="shop.totalCount" [list]="list" default>
+            <ngx-datatable-column
+                [name]="'::Actions' | abpLocalization"
+                [maxWidth]="150"
+                [sortable]="false"
+                >
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div ngbDropdown container="body" class="d-inline-block">
+                    <button
+                        class="btn btn-primary btn-sm dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        ngbDropdownToggle
+                    >
+                        <i class="fa fa-cog me-1"></i>{{ '::Actions' | abpLocalization }}
+                    </button>
+                    <div ngbDropdownMenu>
+                        <button *abpPermission="'ClientPortal.Shops.Edit'" ngbDropdownItem (click)="editShop(row.id)">
+                        {{ '::Edit' | abpLocalization }}
+                        </button>
+                        <button *abpPermission="'ClientPortal.Shops.Delete'" ngbDropdownItem (click)="delete(row.id)">
+                            {{ '::Delete' | abpLocalization }}
+                        </button>
+                    </div>
+                    </div>
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:Name' | abpLocalization" prop="name"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:ShopCode' | abpLocalization" prop="shopCode"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:ZipCode' | abpLocalization" prop="zipCode"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:Phone' | abpLocalization" prop="phone"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:Email' | abpLocalization" prop="email"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:IsFFC' | abpLocalization" prop="isFFC"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:OpenSunday' | abpLocalization" prop="openSunday"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:OrderSent' | abpLocalization" prop="orderSent"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:OrderReceived' | abpLocalization" prop="orderReceived"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:OrderRejected' | abpLocalization" prop="orderRejected"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:WireServiceId' | abpLocalization" prop="wireServiceId">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ '::Enum:WireService.' + row.wireServiceId | abpLocalization }}
+                </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:IsPreferred' | abpLocalization" prop="isPreferred"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:IsActive' | abpLocalization" prop="isActive"> </ngx-datatable-column>
+            <ngx-datatable-column [name]="'::Shop:IsBlocked' | abpLocalization" prop="isBlocked"> </ngx-datatable-column>
+        </ngx-datatable>
+    </div>
+</div>
+
+<abp-modal [(visible)]="isModalOpen" [options]="{ size: 'lg' }">
+    <ng-template #abpHeader>
+        <h3>{{ (selectedShop.id ? '::Edit' : '::Shop:NewShop') | abpLocalization }}</h3>
+    </ng-template>
+    <ng-template #abpBody>
+        <form [formGroup]="form" (ngSubmit)="save()">
+            <div class="row">
+                <div class="col col-md-6">
+                    <div class="mt-2">
+                        <label for="shop-name">{{ '::Shop:Name' | abpLocalization }}</label><span> * </span>
+                        <input type="text" id="shop-name" class="form-control" formControlName="name" autofocus />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-code">{{ '::Shop:ShopCode' | abpLocalization }}</label><span> * </span>
+                        <input type="text" id="shop-code" class="form-control" formControlName="shopCode" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-zipCode">{{ '::Shop:ZipCode' | abpLocalization }}</label><span> * </span>
+                        <input type="text" id="shop-zipCode" class="form-control" formControlName="zipCode" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-phone">{{ '::Shop:Phone' | abpLocalization }}</label>
+                        <input type="text" id="shop-phone" class="form-control" formControlName="phone" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-email">{{ '::Shop:Email' | abpLocalization }}</label>
+                        <input type="text" id="shop-email" class="form-control" formControlName="email" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-openSunday">{{ '::Shop:OpenSunday' | abpLocalization }}</label>
+                        <input type="number" id="shop-openSunday" class="form-control" formControlName="openSunday" />
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <div class="mt-2">
+                        <label for="shop-orderSent">{{ '::Shop:OrderSent' | abpLocalization }}</label>
+                        <input type="number" id="shop-orderSent" class="form-control" formControlName="orderSent" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-orderRecieved">{{ '::Shop:OrderReceived' | abpLocalization }}</label>
+                        <input type="number" id="shop-orderRecieved" class="form-control" formControlName="orderReceived" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-orderRejected">{{ '::Shop:OrderRejected' | abpLocalization }}</label>
+                        <input type="number" id="shop-orderRejected" class="form-control" formControlName="orderRejected" />
+                    </div>
+                    <div class="mt-2">
+                        <label for="shop-wireService">{{ '::Shop:WireServiceId' | abpLocalization }}</label><span> * </span>
+                        <select class="form-control" id="shop-wireService" formControlName="wireServiceId">
+                            <option [ngValue]="null">--Select--</option>
+                            <option [ngValue]="wire.value" *ngFor="let wire of wireService"> {{ '::Enum:WireService.' + wire.value | abpLocalization }}</option>
+                        </select>
+                    </div>
+                    <div class="mt-2 form-check">
+                        <label for="shop-isFFC" class="form-check-label">{{ '::Shop:IsFFC' | abpLocalization }}</label>
+                        <input mdbCheckbox type="checkbox" id="shop-isFFC" class="form-check-input" formControlName="isFFC" />
+                    </div>
+                    <div class="mt-2 form-check">
+                        <label for="shop-isPreferred" class="form-check-label">{{ '::Shop:IsPreferred' | abpLocalization }}</label>
+                        <input mdbCheckbox type="checkbox" id="shop-isPreferred" class="form-check-input" formControlName="isPreferred" />
+                    </div>
+                    <div class="mt-2 form-check">
+                        <label for="shop-isActive" class="form-check-label">{{ '::Shop:IsActive' | abpLocalization }}</label>
+                        <input mdbCheckbox type="checkbox" id="shop-isActive" class="form-check-input" formControlName="isActive" />
+                    </div>
+                    <div class="mt-2 form-check">
+                        <label for="shop-isBlocked" class="form-check-label">{{ '::Shop:IsBlocked' | abpLocalization }}</label>
+                        <input mdbCheckbox type="checkbox" id="shop-isBlocked" class="form-check-input" formControlName="isBlocked" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <ng-template #abpFooter>
+        <button type="button" class="btn btn-secondary" abpClose>
+        {{ '::Close' | abpLocalization }}
+        </button>
+        <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+            <i class="fa fa-check mr-1"></i>
+            {{ '::Save' | abpLocalization }}
+        </button>
+    </ng-template>
+</abp-modal>

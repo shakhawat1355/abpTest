@@ -1,0 +1,302 @@
+<mat-card class="example-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{ '::EditCustomer' | abpLocalization }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mt-2">
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="save()">
+
+      <mat-expansion-panel class="mb-3" expanded>
+        <mat-expansion-panel-header>
+          <i class="fa fa-email mr-1"></i>
+          {{ '::Personal Details' | abpLocalization }}
+        </mat-expansion-panel-header>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput type="text" id="customer-name" formControlName="name" autofocus />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Address 1</mat-label>
+              <input matInput type="text" id="customer-address1" formControlName="address1" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Address 2</mat-label>
+              <input matInput type="text" id="customer-address2" formControlName="address2" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Country</mat-label>
+              <mat-select matinput id="customer-countryId" matInput (selectionChange)="onChangeCountry($event)"
+                formControlName="countryId">
+                <mat-option *ngFor="let country of countries$" [value]="country.id">{{ country.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Province</mat-label>
+              <mat-select matinput matInput id="customer-stateProvinceId" formControlName="stateProvinceId">
+                <mat-option *ngFor="let state of filteredStateProvinces" [value]="state.id">{{ state.name
+                  }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>City</mat-label>
+              <input matInput type="text" id="customer-city" formControlName="city" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Zip</mat-label>
+              <input matInput type="text" id="customer-zip" formControlName="zip" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Fax</mat-label>
+              <input matInput type="text" id="customer-fax" formControlName="fax" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <label for="customer-isWholeSale">Whole Sale</label>
+            <div>
+              <mat-radio-group formControlName="isWholeSale">
+                <mat-radio-button id="isWholeSale-true" [value]="true">Yes</mat-radio-button>
+                <mat-radio-button id="isWholeSale-false" [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label for="customer-isOptDirectoryMarketing">Opt Out of Direct Marketing</label>
+            <div>
+              <mat-radio-group formControlName="isOptDirectoryMarketing">
+                <mat-radio-button id="isOptDirectoryMarketing-true" [value]="true">Yes</mat-radio-button>
+                <mat-radio-button id="isOptDirectoryMarketing-false" [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+        </div>
+
+        <app-email-list *ngIf="this.id" [entityName]="this.entityName" [entityId]="this.id"></app-email-list>
+        <app-phone-list *ngIf="this.id" [entityName]="this.entityName" [entityId]="this.id"></app-phone-list>
+
+      </mat-expansion-panel>
+
+      <mat-expansion-panel class="mb-3" expanded>
+        <mat-expansion-panel-header>
+          <i class="fa fa-email mr-1"></i>
+          {{ '::Other Details' | abpLocalization }}
+        </mat-expansion-panel-header>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select matinput id="customer-statusValueId" formControlName="statusValueId">
+                <mat-option [value]="null">Select status</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableStatuses" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Type</mat-label>
+              <mat-select matinput id="customer-typeId" formControlName="typeId">
+                <mat-option [value]="null">Select type</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableTypes" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Acct Class</mat-label>
+              <mat-select matinput id="customer-acctClassValueId" formControlName="acctClassValueId">
+                <mat-option [value]="null">Select</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableAcctClasses" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Acct Manager</mat-label>
+              <mat-select matinput id="customer-acctManagerValueId" formControlName="acctManagerValueId">
+                <mat-option [value]="null">Select</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableAcctManagers" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Store Location</mat-label>
+              <mat-select matinput id="customer-storeId" formControlName="storeId">
+                <mat-option [value]="null">Select store location</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableStores" [value]="pValue.id">
+                  {{ pValue.storeFormatted }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Terms</mat-label>
+              <mat-select matinput id="customer-termValueId" formControlName="termValueId">
+                <mat-option [value]="null">Select terms</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableTerms" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <label for="customer-taxExempt">Tax Exempt</label>
+            <div>
+              <mat-radio-group formControlName="taxExempt">
+                <mat-radio-button id="taxExempt-true" [value]="true">Yes</mat-radio-button>
+                <mat-radio-button id="taxExempt-false" [value]="false">No</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Discount</mat-label>
+              <input matInput type="number" id="customer-discount" formControlName="discount" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Discount (%) on Wire Out</mat-label>
+              <input matInput type="number" id="customer-discountOnWireout" formControlName="discountOnWireout" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>
+                Invoice Payment Schedule</mat-label>
+              <mat-select matinput id="customer-invoicePaymentSchedulerValueId"
+                formControlName="invoicePaymentSchedulerValueId">
+                <mat-option [value]="null">Select</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableInvoicePaymentSchedule"
+                  [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>AR Statement Invoice Type</mat-label>
+              <mat-select matinput id="customer-arStatementInvoiceTypeValueId"
+                formControlName="arStatementInvoiceTypeValueId">
+                <mat-option [value]="null">Select</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableARStatementInvoiceTypes"
+                  [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Price Sheet Code</mat-label>
+              <mat-select matinput id="customer-priceSheetCodeValueId" formControlName="priceSheetCodeValueId">
+                <mat-option [value]="null">Select price sheet code</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availablePriceSheetCodes" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Referred By</mat-label>
+              <mat-select matinput id="customer-referredByValueId" formControlName="referredByValueId">
+                <mat-option [value]="null">Select referred by</mat-option>
+                <mat-option *ngFor="let pValue of this.selectedCustomer.availableReferredBy" [value]="pValue.id">
+                  {{ pValue.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Customer Reference</mat-label>
+              <input matInput type="text" id="customer-customerReference" formControlName="customerReference" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Comment</mat-label>
+              <textarea matInput type="text" id="customer-comment" formControlName="comment"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <div class="pt-2">
+      <button type="button" class="btn btn-secondary m-1" [routerLink]="['/customers']">
+        {{ '::Cancel' | abpLocalization }}
+      </button>
+
+      <button type="submit" class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+        <i class="fa fa-check mr-1"></i>
+        <span> {{ '::Save' | abpLocalization }}</span>
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

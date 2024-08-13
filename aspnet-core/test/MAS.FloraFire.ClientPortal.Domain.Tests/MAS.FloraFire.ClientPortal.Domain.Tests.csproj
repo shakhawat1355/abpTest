@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MAS.FloraFire.ClientPortal</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MAS.FloraFire.ClientPortal.Domain\MAS.FloraFire.ClientPortal.Domain.csproj" />
+    <ProjectReference Include="..\MAS.FloraFire.ClientPortal.TestBase\MAS.FloraFire.ClientPortal.TestBase.csproj" />
+  </ItemGroup>
+
+</Project>

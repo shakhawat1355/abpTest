@@ -1,0 +1,106 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">
+            {{ '::Menu:EmailDirectory' | abpLocalization }}
+          </h5>
+        </div>
+        <div class="text-end col col-md-6">
+
+          <div class="text-lg-end pt-2">
+            <button *abpPermission="'ClientPortal.EmailDirectory.Create'" id="create" class="btn btn-primary" type="button" (click)="createEmail()">
+              <i class="fa fa-plus me-1"></i>
+              <span>{{ "::NewEmail" | abpLocalization }}</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ngx-datatable [rows]="emailDirectories.items" [count]="emailDirectories.totalCount" [list]="list" default>
+        <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div ngbDropdown container="body" class="d-inline-block">
+              <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" ngbDropdownToggle>
+                <i class="fa fa-cog me-1"></i>{{ '::Actions' | abpLocalization }}
+              </button>
+              <div ngbDropdownMenu>
+                <button *abpPermission="'ClientPortal.EmailDirectory.Edit'" ngbDropdownItem (click)="editEmail(row.id)">
+                  {{ '::Edit' | abpLocalization }}
+                </button>
+                <button *abpPermission="'ClientPortal.EmailDirectory.Edit'" ngbDropdownItem (click)="delete(row.id)">
+                  {{ '::Delete' | abpLocalization }}
+              </button>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::Email' | abpLocalization" prop="email"></ngx-datatable-column>
+        <ngx-datatable-column [name]="'::IsPrimary' | abpLocalization" prop="isPrimary">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row.isPrimary ? 'Yes' : 'No' }}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column [name]="'::OptOutForMarketing' | abpLocalization" prop="optOutForMarketing">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.optOutForMarketing ? 'Yes' : 'No' }}
+            </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column [name]="'::OptForDirectMarketing' | abpLocalization" prop="optForDirectMarketing">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.optForDirectMarketing ? 'Yes' : 'No' }}
+            </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+    </div>
+  </div>
+
+  <!-- Add the modal here -->
+<abp-modal [(visible)]="isModalOpen">
+  <ng-template #abpHeader>
+    <h3>{{ (selectedEmail.id ? '::Edit' : '::NewEmail' ) | abpLocalization }}</h3>
+  </ng-template>
+
+  <ng-template #abpBody> 
+    <form [formGroup]="form" (ngSubmit)="save()">
+      
+      <div class="mt-2">
+        <label for="email">Email</label><span> * </span>
+        <input type="email" id="email" class="form-control" formControlName="email" rows="4" autofocus/>
+      </div>
+
+      <div class="mt-2">
+          <div class="form-check mt-2">
+            <input type="checkbox" id="isPrimary" class="form-check-input" formControlName="isPrimary" />
+          <label class="form-check-label ml-2" for="isPrimary">Is Primary Email Address</label>
+          </div>
+          <div class="form-check mt-2">
+            <input type="checkbox" id="optOutForMarketing" class="form-check-input" formControlName="optOutForMarketing" />
+            <label class="form-check-label" for="optOutForMarketing">Opt Out For Marketing</label>
+          </div>
+
+          <div class="form-check mt-2">
+            <input type="checkbox" id="optForDirectMarketing" class="form-check-input" formControlName="optForDirectMarketing" />
+        <label class="form-check-label" for="optForDirectMarketing">Opt For Direct Marketing</label>
+          </div>
+      </div>
+    </form>    
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button type="button" class="btn btn-secondary" abpClose>
+      {{ '::Close' | abpLocalization }}
+    </button>
+
+    <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+      <i class="fa fa-check mr-1"></i>
+      {{ '::Save' | abpLocalization }}
+</button>
+  </ng-template>
+</abp-modal>
+  

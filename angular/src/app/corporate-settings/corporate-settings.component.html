@@ -1,0 +1,199 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col col-md-6">
+        <h5 class="card-title">
+          {{ '::Menu:CorporateSettings' | abpLocalization }}
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="mt-2">
+        <label for="corporateSetting-wireOutOrderHoldTime">Wire Out Order Hold Times</label><span class="text-danger">*</span><span> (In Minutes) </span>
+        <input type="number" id="corporateSetting-wireOutOrderHoldTime" class="form-control" formControlName="wireOutOrderHoldTime" autofocus />
+      </div>
+      <div class="mt-2">
+        <label>Print Raw Comm Message</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="printRawCommMessage-true" formControlName="printRawCommMessage" [value]="true" />
+            <label class="form-check-label" for="printRawCommMessage-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="printRawCommMessage-false" formControlName="printRawCommMessage" [value]="false" />
+            <label class="form-check-label" for="printRawCommMessage-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-geocodingPreferenceType">Geocoding Preferences</label><span class="text-danger">*</span>
+        <input type="number" id="corporateSetting-geocodingPreferenceType" class="form-control" formControlName="geocodingPreferenceType"/>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-updateQuantityCommittedDays">No of Days to Update Quantity Committed</label><span class="text-danger">*</span>
+        <input type="number" id="corporateSetting-updateQuantityCommittedDays" class="form-control" formControlName="updateQuantityCommittedDays"/>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-passwordResetDays">Password Reset</label><span> (In Days) </span>
+        <input type="number" id="corporateSetting-passwordResetDays" class="form-control" formControlName="passwordResetDays" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-returnWindowDays">Return Window</label><span> (In Days) </span>
+        <input type="number" id="corporateSetting-returnWindowDays" class="form-control" formControlName="returnWindowDays" />
+      </div>
+      <div class="mt-2">
+        <label>Allow COD</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="allowCOD-true" formControlName="allowCOD" [value]="true" />
+            <label class="form-check-label" for="allowCOD-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="allowCOD-false" formControlName="allowCOD" [value]="false" />
+            <label class="form-check-label" for="allowCOD-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label>Allow Cash Order Edits</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="allowCashOrderEdits-true" formControlName="allowCashOrderEdits" [value]="true" />
+            <label class="form-check-label" for="allowCashOrderEdits-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="allowCashOrderEdits-false" formControlName="allowCashOrderEdits" [value]="false" />
+            <label class="form-check-label" for="allowCashOrderEdits-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-startingCustomerId">Starting Customer ID</label><span class="text-danger">*</span>
+        <input type="number" id="corporateSetting-startingCustomerId" class="form-control" formControlName="startingCustomerId" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-startingOrderId">Starting Order ID</label><span class="text-danger">*</span>
+        <input type="number" id="corporateSetting-startingOrderId" class="form-control" formControlName="startingOrderId" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-printNoteCardType">Print Note Card</label><span class="text-danger">*</span>
+        <input type="number" id="corporateSetting-printNoteCardType" class="form-control" formControlName="printNoteCardType" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-returnedCheckFee">Returned Check Fee</label>
+        <input type="number" id="corporateSetting-returnedCheckFee" class="form-control" formControlName="returnedCheckFee" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-creditStatusNotAllowedToCharge">Credit Status Not Allowed to Charge</label><span> (In Days) </span>
+        <input type="number" id="corporateSetting-creditStatusNotAllowedToCharge" class="form-control" formControlName="creditStatusNotAllowedToCharge" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-fulfillingStoreId">Fulfilling Store</label>
+        <input type="number" id="corporateSetting-fulfillingStoreId" class="form-control" formControlName="fulfillingStoreId" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-inventoryTrackingType">Inventory Tracking</label><span class="text-danger">*</span>
+        <input type="number" id="corporateSetting-inventoryTrackingType" class="form-control" formControlName="inventoryTrackingType" />
+      </div>
+      <div class="mt-2 d-flex align-items-center">
+        <label>Apply Credit Card Setup to All Stores</label>
+        <div class="form-check form-check-inline ms-2">
+          <input class="form-check-input" type="checkbox" id="applyCreditCardSetupToAllStores-true" formControlName="applyCreditCardSetupToAllStores" [value]="false" />
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-relayFee">Relay Fee</label>
+        <input type="number" id="corporateSetting-relayFee" class="form-control" formControlName="relayFee" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-overseasRelayFee">Overseas Relay Fee</label>
+        <input type="number" id="corporateSetting-overseasRelayFee" class="form-control" formControlName="overseasRelayFee" />
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-wireOutDeliveryFee">Wire Out Delivery Fee</label>
+        <input type="number" id="corporateSetting-wireOutDeliveryFee" class="form-control" formControlName="wireOutDeliveryFee" />
+      </div>
+      <div class="mt-2">
+        <label>Tax on Delivery</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="taxOnDelivery-true" formControlName="taxOnDelivery" [value]="true" />
+            <label class="form-check-label" for="taxOnDelivery-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="taxOnDelivery-false" formControlName="taxOnDelivery" [value]="false" />
+            <label class="form-check-label" for="taxOnDelivery-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label>Tax on Relay</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="taxOnRelay-true" formControlName="taxOnRelay" [value]="true" />
+            <label class="form-check-label" for="taxOnRelay-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="taxOnRelay-false" formControlName="taxOnRelay" [value]="false" />
+            <label class="form-check-label" for="taxOnRelay-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-salesTaxPercentage">Sales Tax</label><span> % </span>
+        <input type="number" id="corporateSetting-salesTaxPercentage" class="form-control" formControlName="salesTaxPercentage" />
+      </div>
+      <div class="mt-2">
+        <label>Funeral Required</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="funeralRequired-true" formControlName="funeralRequired" [value]="true" />
+            <label class="form-check-label" for="funeralRequired-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="funeralRequired-false" formControlName="funeralRequired" [value]="false" />
+            <label class="form-check-label" for="funeralRequired-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 d-flex align-items-center">
+        <label>Print Funeral Review Copy</label>
+        <div class="form-check form-check-inline ms-2">
+          <input class="form-check-input" type="checkbox" id="printFuneralReviewCopy-true" formControlName="printFuneralReviewCopy" [value]="false" />
+        </div>
+      </div>
+      <div class="mt-2">
+        <label>Hospital Required</label><span class="text-danger">*</span>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="hospitalRequired-true" formControlName="hospitalRequired" [value]="true" />
+            <label class="form-check-label" for="hospitalRequired-true">Yes</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" id="hospitalRequired-false" formControlName="hospitalRequired" [value]="false" />
+            <label class="form-check-label" for="hospitalRequired-false">No</label>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 d-flex align-items-center">
+        <label>Print Hospital Review Copy</label>
+        <div class="form-check form-check-inline ms-2">
+          <input class="form-check-input" type="checkbox" id="printHospitalReviewCopy-true" formControlName="printHospitalReviewCopy" [value]="false" />
+        </div>
+      </div>
+      <div class="mt-2">
+        <label for="corporateSetting-customerAccountInfoUpdateType">Update Customer Account Info</label>
+        <input type="number" id="corporateSetting-customerAccountInfoUpdateType" class="form-control" formControlName="customerAccountInfoUpdateType" />
+      </div>
+      <div class="mt-2">
+        <button class="btn btn-primary" [disabled]="form.invalid" type="submit">
+          <i class="fa fa-check mr-1"></i>
+          {{ '::Save' | abpLocalization }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

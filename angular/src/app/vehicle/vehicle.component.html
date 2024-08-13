@@ -1,0 +1,128 @@
+<div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col col-md-6">
+          <h5 class="card-title">
+            {{ '::Menu:Vehicles' | abpLocalization }}
+          </h5>
+        </div>
+        <div class="text-end col col-md-6 row justify-content-end mx-0 gap-2">
+          <div class="col-auto px-0 pt-0">
+            <app-export-csv [apiUrl]="exportUrl" fileName="vehicles"
+            [fieldList]="exportFieldList">
+            ></app-export-csv>
+          </div>
+            <div class="col-auto px-0 pt-0">
+                <button *abpPermission="'ClientPortal.Vehicles.Create'" id="create" class="btn btn-primary" type="button" (click)="createVehicle()">
+                  <i class="fa fa-plus me-1"></i>
+                  <span>{{ "::NewVehicle" | abpLocalization }}</span>
+                </button>
+              </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <ngx-datatable [rows]="vehicle.items" [count]="vehicle.totalCount" [list]="list" default>
+        <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+                <div ngbDropdown container="body" class="d-inline-block">
+                <button
+                    class="btn btn-primary btn-sm dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    ngbDropdownToggle
+                >
+                    <i class="fa fa-cog me-1"></i>{{ '::Actions' | abpLocalization }}
+                </button>
+                <div ngbDropdownMenu>
+                    <button *abpPermission="'ClientPortal.Vehicles.Edit'" ngbDropdownItem (click)="editVehicle(row.id)">
+                      {{ '::Edit' | abpLocalization }}
+                    </button>
+                    <button *abpPermission="'ClientPortal.Vehicles.Delete'" ngbDropdownItem (click)="delete(row.id)">
+                      {{ '::Delete' | abpLocalization }}
+                    </button>
+                </div>
+                </div>
+            </ng-template>
+            </ngx-datatable-column>
+        <ngx-datatable-column [name]="'::LicensePlate' | abpLocalization" prop="licensePlate"></ngx-datatable-column>
+        <ngx-datatable-column [name]="'::Model' | abpLocalization" prop="model"></ngx-datatable-column>
+        <ngx-datatable-column [name]="'::ExpirationDate' | abpLocalization" prop="expirationDate">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{ row.expirationDate | date }}
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+
+  <!-- Add the modal here -->
+<abp-modal [(visible)]="isModalOpen">
+    <ng-template #abpHeader>
+        <h3>{{ (selectedVehicle.id ? '::Edit' : '::NewVehicle' ) | abpLocalization }}</h3>
+    </ng-template>
+  
+    <ng-template #abpBody>
+        <form [formGroup]="form" (ngSubmit)="save()">
+            <div class="mt-2">
+              <label for="license-plate">License Plate</label><span> * </span>
+              <input type="text" id="license-plate" class="form-control" formControlName="licensePlate" autofocus />
+            </div>
+        
+            <div class="mt-2">
+              <label for="vin">VIN</label><span> * </span>
+              <input type="text" id="vin" class="form-control" formControlName="vin" />
+            </div>
+
+            <div class="mt-2">
+                <label for="model">Model</label>
+                <input type="text" id="model" class="form-control" formControlName="model" />
+            </div>
+
+            <div class="form-group mt-2">
+            <label for="vehicle-statusValueId">Status</label><span> * </span>
+            <select class="form-control" id="vehicle-statusValueId" formControlName="statusValueId">
+                <option [ngValue]="null">Select Status</option>
+                <option [ngValue]="pValue.id" *ngFor="let pValue of pValueList$ | async">
+                {{ pValue.name }}
+                </option>
+            </select>
+            </div>
+
+            <div class="mt-2">
+              <label>Expiration Date</label>
+              <input
+                #expirationDatePicker="ngbDatepicker"  class="form-control"
+                name="expirationDate"
+                formControlName="expirationDate"
+                ngbDatepicker
+                (click)="expirationDatePicker.toggle()"
+              />
+            </div>
+            
+            <div class="mt-2">
+              <label>Maintenance Due</label>
+              <input
+                #maintenanceDatePicker="ngbDatepicker"  class="form-control"
+                name="maintenanceDue"
+                formControlName="maintenanceDue"
+                ngbDatepicker
+                (click)="maintenanceDatePicker.toggle()"
+              />
+            </div>
+            
+          </form>     
+    </ng-template>
+  
+    <ng-template #abpFooter>
+      <button type="button" class="btn btn-secondary" abpClose>
+        {{ '::Close' | abpLocalization }}
+      </button>
+
+      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+        <i class="fa fa-check mr-1"></i>
+        {{ '::Save' | abpLocalization }}
+  </button>
+    </ng-template>
+  </abp-modal>
+  
